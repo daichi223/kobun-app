@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 古文単語学習アプリ (Kobun Learning App)
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -183,3 +184,6 @@ npx tsc --noEmit
 ## 🔄 更新履歴
 
 最新の変更については [CHANGELOG.md](CHANGELOG.md) をご覧ください。
+=======
+# my_agent
+>>>>>>> 1884e9905ab60001fd6da9c4590b25800470fb6f
