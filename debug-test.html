@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test - Data Loading</title>
+</head>
+<body>
+    <h1>Emergency Debug Test</h1>
+    <div id="results"></div>
+
+    <script>
+        async function testDataFlow() {
+            const results = document.getElementById('results');
+
+            try {
+                console.log("🔥 Testing fetch /kobun_q.jsonl");
+                const response = await fetch('/kobun_q.jsonl');
+                console.log("🔥 Fetch response status:", response.status, response.ok);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const text = await response.text();
+                console.log("🔥 Raw text length:", text.length);
+                console.log("🔥 First 200 chars:", text.substring(0, 200));
+
+                const lines = text.split('\n').filter(line => line.trim());
+                console.log("🔥 Total lines:", lines.length);
+
+                let questionCount = 0;
+                let range1to50Count = 0;
+
+                for (let i = 0; i < Math.min(lines.length, 100); i++) {
+                    const line = lines[i];
+                    try {
+                        const parsed = JSON.parse(line);
+                        if (parsed.qid && parsed.lemma && parsed.sense && typeof parsed.word_idx === 'number') {
+                            questionCount++;
+                            if (parsed.word_idx >= 1 && parsed.word_idx <= 50) {
+                                range1to50Count++;
+                            }
+                            if (i < 5) {
+                                console.log(`🔥 Question ${i}:`, parsed);
+                            }
+                        }
+                    } catch (e) {
+                        console.warn("Failed to parse line", i, e);
+                    }
+                }
+
+                const totalQuestions = lines.length;
+
+                results.innerHTML = `
+                    <h2>✅ DATA LOADING TEST RESULTS</h2>
+                    <p><strong>Fetch Status:</strong> ${response.status} ${response.ok ? '✅' : '❌'}</p>
+                    <p><strong>Raw Text Length:</strong> ${text.length} bytes</p>
+                    <p><strong>Total Lines:</strong> ${lines.length}</p>
+                    <p><strong>Sample Questions (first 100):</strong> ${questionCount}</p>
+                    <p><strong>Range 1-50 (first 100):</strong> ${range1to50Count}</p>
+                    <p><strong>Estimated Range 1-50 Total:</strong> ${Math.round(range1to50Count * totalQuestions / 100)}</p>
+                `;
+
+                console.log("🔥 TEST COMPLETE - Check results above");
+
+            } catch (error) {
+                console.error("🔥 TEST FAILED:", error);
+                results.innerHTML = `<h2>❌ TEST FAILED</h2><p>${error.message}</p>`;
+            }
+        }
+
+        // Run test when page loads
+        window.addEventListener('load', testDataFlow);
+    </script>
+</body>
+</html>
