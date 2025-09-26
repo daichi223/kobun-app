@@ -20,7 +20,10 @@
       "Bash(npm cache clean:*)",
       "Read(//tmp/kobun-test/**)",
       "Bash(python3:*)",
-      "Bash(/tmp/kobun-test/node_modules/.bin/vite:*)"
+      "Bash(/tmp/kobun-test/node_modules/.bin/vite:*)",
+      "Bash(git init:*)",
+      "Bash(git branch:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
