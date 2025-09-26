@@ -1,189 +1,164 @@
-<<<<<<< HEAD
-# 古文単語学習アプリ (Kobun Learning App)
+# 古文単語学習アプリ | Classical Japanese Vocabulary Learning App
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
+<div align="center">
+
+![Logo](https://img.shields.io/badge/古文単語学習-Classical_Japanese-blue?style=for-the-badge&logo=graduation-cap)
+
+**間隔反復学習で古典文学の語彙をマスターしよう**
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-間隔反復学習（SRS: Spaced Repetition System）を使用した古典日本語語彙学習アプリケーション。古典文学の単語とその意味を効率的に暗記できるように設計されています。
+</div>
 
-## 📚 主な機能
+## 🎯 機能概要
 
-- **間隔反復学習（SRS）**: SM-2アルゴリズムに基づく最適化された復習スケジューリング
-- **複数の学習モード**:
+このアプリは高校生・大学受験生向けの古文語彙学習ツールです。科学的な間隔反復学習（SRS）システムを使用して、効率的な暗記と長期記憶の定着を支援します。
+
+### ✨ 主要機能
+
+- **🧠 間隔反復学習（SRS）**: SM-2アルゴリズムによる科学的な復習スケジュール
+- **🎮 4つの学習モード**:
   - 古語 → 意味
   - 意味 → 古語
   - 例文 → 意味
-  - 例文（現代語訳）→ 古語
-- **範囲指定学習**: 特定の単語範囲に限定した学習が可能
-- **学習進捗管理**: 復習予定・未学習問題数の可視化
-- **古典例文表示**: 古典文学からの実用例文と現代語訳
-- **レスポンシブデザイン**: デスクトップ・タブレット・スマートフォン対応
+  - 例文（訳）→ 古語
+- **🎨 Apple風デザイン**: 洗練されたUI/UXデザイン
+- **♿ アクセシビリティ**: キーボードナビゲーション・スクリーンリーダー対応
+- **📱 レスポンシブ**: モバイル・タブレット・デスクトップ対応
+- **📊 学習統計**: 進捗追跡と視覚的フィードバック
 
 ## 🚀 クイックスタート
 
-### 前提条件
+### GitHub Codespaces（推奨）
 
-- Node.js (v18.0.0 以上)
-- npm または yarn
+1. このリポジトリをフォーク
+2. **Code** ボタン → **Codespaces** → **Create codespace on main**
+3. 自動的に環境が構築され、アプリが起動します
 
-### インストールと起動
+### ローカル開発
 
 ```bash
 # リポジトリをクローン
-git clone <repository-url>
+git clone https://github.com/USERNAME/kobun-app.git
 cd kobun-app
 
 # 依存関係をインストール
-npm install
+npm install --legacy-peer-deps
 
 # 開発サーバーを起動
 npm run dev
 ```
 
-ブラウザで `http://localhost:5173` にアクセスしてアプリケーションを使用できます。
+アプリは `http://localhost:5173` で利用できます。
 
-### データファイルの準備
+## 🎮 使い方
 
-アプリケーションには語彙データが必要です：
+### 基本操作
+1. **出題形式**を選択（古語→意味など）
+2. **学習範囲**を指定（例: 1-50）
+3. **問題数**を設定（5/10/15/20問）
+4. **新しいクイズセット**をクリックして開始
 
-1. `public/kobun_q.jsonl` または `public/kobun_words.jsonl` にJSONLフォーマットの語彙データを配置
-2. データフォーマットの詳細は [docs/DATA_FORMAT.md](docs/DATA_FORMAT.md) を参照
+### キーボードショートカット
+- **1-4キー**: 選択肢の直接選択
+- **↑↓矢印キー**: 選択肢のナビゲーション
+- **Enter/Space**: 決定
+- **Escape**: キャンセル
 
-## 📖 使用方法
+### 学習システム
+- **正解**: 次の復習までの間隔が延長
+- **不正解**: 即座に復習対象として再登場
+- **進捗統計**: 復習予定・未学習・正答率を表示
 
-### 基本的な学習フロー
+## 🏗️ 技術スタック
 
-1. **学習モード選択**: ドロップダウンから学習形式を選択
-2. **範囲設定**: 学習したい単語の範囲を指定（例: "1-50"）
-3. **問題数設定**: 1セッションあたりの問題数を選択（5-20問）
-4. **学習開始**: "新しいクイズセット" ボタンをクリック
-5. **問題解答**: 4択から正解を選択
-6. **結果確認**: 正解・不正解に応じてSRSアルゴリズムが次回復習日を自動調整
+- **Frontend**: React 19 + TypeScript
+- **Styling**: Tailwind CSS v4
+- **Build Tool**: Vite
+- **Testing**: Vitest + Playwright
+- **Development**: GitHub Codespaces
 
-### 学習モード詳細
-
-- **古語 → 意味**: 古語が表示され、現代語の意味を選択
-- **意味 → 古語**: 現代語の意味が表示され、対応する古語を選択
-- **例文 → 意味**: 古典例文が表示され、文中の古語の意味を選択
-- **例文（訳）→ 古語**: 現代語訳が表示され、対応する古語を選択
-
-## 🏗️ プロジェクト構造
+## 📁 プロジェクト構造
 
 ```
-kobun-app/
-├── public/
-│   ├── kobun_q.jsonl          # 語彙データファイル（メイン）
-│   └── kobun_words.jsonl      # 語彙データファイル（フォールバック）
-├── src/
-│   ├── components/
-│   │   └── ui/                # 再利用可能なUIコンポーネント
-│   │       ├── button.tsx
-│   │       ├── card.tsx
-│   │       ├── input.tsx
-│   │       ├── progress.tsx
-│   │       └── select.tsx
-│   ├── utils/
-│   │   ├── srs.test.ts        # SRSアルゴリズムのテスト
-│   │   └── shuffle.test.ts    # シャッフル機能のテスト
-│   ├── App.tsx                # メインアプリケーションコンポーネント
-│   └── main.tsx               # エントリーポイント
-├── docs/                      # ドキュメンテーション
-└── tests/                     # テストファイル
+src/
+├── components/
+│   ├── ui/              # UIコンポーネント
+│   ├── QuizSettings.tsx # クイズ設定
+│   ├── QuizCard.tsx     # クイズカード
+│   └── QuizQuestion.tsx # 質問表示
+├── hooks/
+│   ├── useQuizData.ts   # データ管理
+│   ├── useQuizLogic.ts  # クイズロジック
+│   └── useKeyboardNavigation.ts
+├── types/
+│   └── quiz.ts          # 型定義
+├── utils/
+│   ├── srs.ts          # SRSアルゴリズム
+│   ├── shuffle.ts      # シャッフル機能
+│   └── validation.ts   # バリデーション
+└── App.tsx             # メインアプリ
 ```
 
-## 🧠 SRSアルゴリズム
+## 📊 データ形式
 
-このアプリケーションは簡素化されたSM-2（SuperMemo 2）アルゴリズムを使用：
+語彙データは `public/kobun_q.jsonl` に格納されています（JSONL形式）：
 
-- **品質評価**: 1（Again）, 3（Hard）, 4（Good）, 5（Easy）
-- **間隔計算**: 初回1日、2回目6日、以降は難易度係数に基づいて計算
-- **難易度係数**: 1.3-2.5の範囲で動的調整
-- **復習タイミング**: 各アイテムの習熟度に基づいて個別に設定
+```json
+{
+  "qid": "1-1",
+  "lemma": "おどろく",
+  "sense": "〔 気づい 〕",
+  "word_idx": 1,
+  "examples": [{
+    "jp": "秋来ぬと目にはさやかに見えねども風の音にぞおどろかれぬる（古今和歌集）",
+    "translation": "（訳）秋がやって来たと、目にははっきり見えないけれど、風の音に（もう秋なのだと）自然と〔 気づい 〕たことだ。"
+  }]
+}
+```
 
-詳細は [docs/SRS_ALGORITHM.md](docs/SRS_ALGORITHM.md) を参照してください。
-
-## 🧪 テスト
+## 🧪 開発・テスト
 
 ```bash
-# 全テストを実行
-npm test
+# テスト実行
+npm run test
 
-# テストをウォッチモードで実行
-npm run test:watch
+# E2Eテスト
+npm run test:e2e
 
-# カバレッジレポートを生成
-npm run test:coverage
-```
-
-## 🏃‍♂️ ビルドとデプロイ
-
-### 本番ビルド
-
-```bash
-# 本番用ビルドを作成
+# ビルド
 npm run build
 
-# ビルド結果をプレビュー
+# プレビュー
 npm run preview
-```
-
-### デプロイ
-
-詳細なデプロイ手順は [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) を参照してください。
-
-## 🛠️ 開発
-
-### 開発環境セットアップ
-
-```bash
-# 依存関係をインストール
-npm install
-
-# 開発サーバーを起動（HMR付き）
-npm run dev
-
-# リンターを実行
-npm run lint
-
-# TypeScriptタイプチェック
-npx tsc --noEmit
-```
-
-### 技術スタック
-
-- **フロントエンド**: React 19 + TypeScript
-- **ビルドツール**: Vite
-- **スタイリング**: Tailwind CSS
-- **テスト**: Vitest + Testing Library
-- **リンター**: ESLint + TypeScript ESLint
-
-## 📋 データフォーマット
-
-語彙データは JSONL (JSON Lines) 形式で提供：
-
-```jsonl
-{"qid": "1-1", "lemma": "おどろく", "group": 1, "sub": 1, "word_idx": 1, "meaning_idx": 1, "sense": "〔 気づい 〕", "examples": [{"jp": "秋来ぬと目にはさやかに見えねども風の音にぞおどろかれぬる（古今和歌集）", "translation": "（訳）秋がやって来たと、目にははっきり見えないけれど、風の音に（もう秋なのだと）自然と〔 気づい 〕たことだ。"}]}
 ```
 
 ## 🤝 コントリビューション
 
-プロジェクトへの貢献を歓迎します！詳細は [CONTRIBUTING.md](CONTRIBUTING.md) をご覧ください。
+1. このリポジトリをフォーク
+2. フィーチャーブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m 'Add amazing feature'`)
+4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
+5. プルリクエストを作成
 
 ## 📄 ライセンス
 
-このプロジェクトは MIT ライセンスの下で公開されています。詳細は [LICENSE](LICENSE) ファイルをご覧ください。
+このプロジェクトは MIT ライセンスの下で公開されています。
 
-## 📞 サポート
+## 🙏 謝辞
 
-- **問題報告**: [GitHub Issues](../../issues)
-- **機能要望**: [GitHub Discussions](../../discussions)
-- **ドキュメンテーション**: [docs/](docs/) フォルダ
+- **古典語彙データ**: 教育用古文語彙データセット
+- **SM-2アルゴリズム**: Piotr Wozniak博士の間隔反復研究
+- **デザインシステム**: Apple Human Interface Guidelines
 
-## 🔄 更新履歴
+---
 
-最新の変更については [CHANGELOG.md](CHANGELOG.md) をご覧ください。
-=======
-# my_agent
->>>>>>> 1884e9905ab60001fd6da9c4590b25800470fb6f
+<div align="center">
+
+**🤖 Generated with [Claude Code](https://claude.ai/code)**
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+</div>
