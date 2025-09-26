@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -143,47 +144,114 @@ export function QuizCard({
         )}
 
         {/* Results Screen */}
-        {finished && (
-          <div className="text-center py-8 animate-slide-in">
-            <div className="mb-6">
-              <div className="w-20 h-20 bg-success-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-10 h-10 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-2">クイズ完了！</h2>
-              <div className="text-4xl font-bold text-primary-600 mb-4">
-                {score}/{quizSetLength}
-              </div>
-              <div className="text-lg text-secondary-600 mb-6">
-                正答率 {Math.round((score / quizSetLength) * 100)}%
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 max-w-sm mx-auto mb-8">
-              <div className="bg-surface-100 rounded-xl p-3">
-                <div className="text-sm text-secondary-500">総問題数</div>
-                <div className="text-xl font-bold text-secondary-700">{modeReadyPoolLength}</div>
-              </div>
-              <div className="bg-warning-50 rounded-xl p-3">
-                <div className="text-sm text-warning-600">復習予定</div>
-                <div className="text-xl font-bold text-warning-700">{dueCount}</div>
-              </div>
-              <div className="bg-primary-50 rounded-xl p-3">
-                <div className="text-sm text-primary-600">未学習</div>
-                <div className="text-xl font-bold text-primary-700">{newCount}</div>
-              </div>
-            </div>
-
-            <Button
-              onClick={onStartSession}
-              size="lg"
-              className="min-w-[160px]"
+        <AnimatePresence>
+          {finished && (
+            <motion.div
+              className="text-center py-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
             >
-              新しいクイズを始める
-            </Button>
-          </div>
-        )}
+              <motion.div
+                className="mb-6"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <motion.div
+                  className="w-20 h-20 bg-success-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3, type: "spring", bounce: 0.4 }}
+                >
+                  <motion.svg
+                    className="w-10 h-10 text-success-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3, delay: 0.5 }}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </motion.svg>
+                </motion.div>
+                <motion.h2
+                  className="text-2xl font-bold text-secondary-900 mb-2"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                >
+                  クイズ完了！
+                </motion.h2>
+                <motion.div
+                  className="text-4xl font-bold text-primary-600 mb-4"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.5, type: "spring" }}
+                >
+                  {score}/{quizSetLength}
+                </motion.div>
+                <motion.div
+                  className="text-lg text-secondary-600 mb-6"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                  正答率 {Math.round((score / quizSetLength) * 100)}%
+                </motion.div>
+              </motion.div>
+
+              <motion.div
+                className="grid grid-cols-3 gap-4 max-w-sm mx-auto mb-8"
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
+              >
+                {[
+                  { label: "総問題数", value: modeReadyPoolLength, bgColor: "bg-surface-100", textColor: "text-secondary-700" },
+                  { label: "復習予定", value: dueCount, bgColor: "bg-warning-50", textColor: "text-warning-700" },
+                  { label: "未学習", value: newCount, bgColor: "bg-primary-50", textColor: "text-primary-700" }
+                ].map((stat, index) => (
+                  <motion.div
+                    key={stat.label}
+                    className={`${stat.bgColor} rounded-xl p-3`}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className={`text-sm ${stat.textColor.replace('700', '600')}`}>{stat.label}</div>
+                    <motion.div
+                      className={`text-xl font-bold ${stat.textColor}`}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.3, delay: 1.0 + index * 0.1, type: "spring" }}
+                    >
+                      {stat.value}
+                    </motion.div>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              <motion.div
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1.2 }}
+              >
+                <Button
+                  onClick={onStartSession}
+                  size="lg"
+                  className="min-w-[160px]"
+                >
+                  新しいクイズを始める
+                </Button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Quiz Question */}
         {!finished && currentQuestion && (

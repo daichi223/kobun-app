@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Question, Mode } from '@/types/quiz';
 
@@ -23,7 +24,12 @@ export function QuizQuestion({
   const isIncorrectFeedback = feedback.startsWith("❌");
 
   return (
-    <div className="animate-slide-in">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Examples at top (for all modes) */}
       {question.examples && question.examples.length > 0 && (
         <div className="mb-8 bg-surface-50 border border-surface-200 rounded-xl p-6">
@@ -113,7 +119,12 @@ export function QuizQuestion({
       </div>
 
       {/* Answer Choices */}
-      <div className="grid gap-4">
+      <motion.div
+        className="grid gap-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
         {choices.map((choice, index) => {
           let buttonVariant: "default" | "success" | "danger" | "secondary" = "secondary";
           let buttonClasses = "relative overflow-hidden";
@@ -139,8 +150,15 @@ export function QuizQuestion({
           const choiceLabel = String.fromCharCode(65 + index); // A, B, C, D
 
           return (
-            <Button
+            <motion.div
               key={choice}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button
               variant={buttonVariant}
               onClick={() => onAnswerSelect(choice)}
               disabled={isAnswered}
@@ -178,14 +196,22 @@ export function QuizQuestion({
                   </div>
                 )}
               </div>
-            </Button>
+              </Button>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Feedback */}
-      {isAnswered && (
-        <div className="mt-6 animate-fade-in">
+      <AnimatePresence>
+        {isAnswered && (
+          <motion.div
+            className="mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
           <div className={`p-4 rounded-xl border ${
             isCorrectFeedback
               ? "bg-success-50 border-success-200 text-success-800"
@@ -205,9 +231,10 @@ export function QuizQuestion({
                 {feedback.replace("✅ ", "").replace("❌ ", "")}
               </span>
             </div>
-          </div>
-        </div>
-      )}
-    </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }

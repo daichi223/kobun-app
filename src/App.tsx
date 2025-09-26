@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { QuizSettings } from "@/components/QuizSettings";
 import { QuizCard } from "@/components/QuizCard";
 import { useQuizData } from "@/hooks/useQuizData";
@@ -159,61 +160,131 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen">
+    <motion.div
+      className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="max-w-6xl mx-auto px-4 py-8 safe-area-inset-top safe-area-inset-bottom">
-        {/* Header */}
-        <div className="mb-12 text-center animate-fade-in">
-          <div className="mb-4">
-            <h1 className="text-6xl font-bold gradient-text mb-4">
+        {/* Animated Header */}
+        <motion.div
+          className="mb-12 text-center"
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <motion.div
+            className="mb-4"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <motion.h1
+              className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent mb-4"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               古文単語学習
-            </h1>
-            <div className="w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full animate-gradient"></div>
-          </div>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            </motion.h1>
+            <motion.div
+              className="w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+            />
+          </motion.div>
+          <motion.p
+            className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             間隔反復学習で古典文学の語彙をマスターしよう
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        {/* Controls Panel */}
-        <QuizSettings
-          mode={mode}
-          setMode={setMode}
-          rangeText={rangeText}
-          setRangeText={setRangeText}
-          numQuestions={numQuestions}
-          setNumQuestions={setNumQuestions}
-          dueCount={dueCount}
-          newCount={newCount}
-          modeReadyPoolLength={modeReadyPool.length}
-          dataStatus={dataStatus}
-          allLength={all.length}
-          rangedLength={ranged.length}
-          onStartSession={startSession}
-          onResetSRS={resetSRS}
-        />
+        {/* Animated Controls Panel */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <QuizSettings
+            mode={mode}
+            setMode={setMode}
+            rangeText={rangeText}
+            setRangeText={setRangeText}
+            numQuestions={numQuestions}
+            setNumQuestions={setNumQuestions}
+            dueCount={dueCount}
+            newCount={newCount}
+            modeReadyPoolLength={modeReadyPool.length}
+            dataStatus={dataStatus}
+            allLength={all.length}
+            rangedLength={ranged.length}
+            onStartSession={startSession}
+            onResetSRS={resetSRS}
+          />
+        </motion.div>
 
-        {/* Quiz Card */}
-        <QuizCard
-          finished={finished}
-          currentQuestion={currentQuestion}
-          qIdx={qIdx}
-          quizSetLength={quizSet.length}
-          choices={choices}
-          feedback={feedback}
-          isAnswered={isAnswered}
-          score={score}
-          mode={mode}
-          dataStatus={dataStatus}
-          dataError={dataError}
-          allLength={all.length}
-          modeReadyPoolLength={modeReadyPool.length}
-          dueCount={dueCount}
-          newCount={newCount}
-          onAnswerSelect={judge}
-          onNextQuestion={nextQuestion}
-          onStartSession={startSession}
-        />
+        {/* Animated Quiz Card */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={qIdx} // Re-animate on question change
+            initial={{ y: 30, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: -30, opacity: 0, scale: 0.95 }}
+            transition={{
+              duration: 0.4,
+              delay: 0.2,
+              ease: "easeOut"
+            }}
+          >
+            <QuizCard
+              finished={finished}
+              currentQuestion={currentQuestion}
+              qIdx={qIdx}
+              quizSetLength={quizSet.length}
+              choices={choices}
+              feedback={feedback}
+              isAnswered={isAnswered}
+              score={score}
+              mode={mode}
+              dataStatus={dataStatus}
+              dataError={dataError}
+              allLength={all.length}
+              modeReadyPoolLength={modeReadyPool.length}
+              dueCount={dueCount}
+              newCount={newCount}
+              onAnswerSelect={judge}
+              onNextQuestion={nextQuestion}
+              onStartSession={startSession}
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Floating Progress Indicator */}
+        <AnimatePresence>
+          {quizSet.length > 0 && !finished && (
+            <motion.div
+              className="fixed bottom-6 right-6 bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg border border-gray-200"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span className="text-sm font-medium text-gray-700">
+                  {qIdx + 1} / {quizSet.length}
+                </span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 }
